@@ -15,7 +15,7 @@ Can contextual information improve incident response decisions compared with a t
 - **Evaluation:** compared against a severity-only baseline using quadratic weighted kappa, mean absolute error, and per-tier precision and recall, plus ablation and counterfactual experiments
 
 ## Repository Contents
-- `docs/Prototype_Plan.pdf` - full prototype plan
+- `docs/Prototype_Plan.pdf` - prototype plan
 - `policy/rubric.yaml` - draft response policy and labelling rubric
 - `src/` - Python modules (in progress)
 
