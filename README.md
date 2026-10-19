@@ -28,7 +28,7 @@ python src/evaluate.py     # ablation and counterfactuals
 - `outputs/` - results: metrics, model coefficients, explanations, ablation and counterfactual tables, ablation chart
 
 ## Status
-Prototype pipeline complete on simulated data: rubric frozen, alert generator, severity baseline, ordinal logistic model, explanations, ablation and counterfactuals. In progress: independently labelled gold set (40 alerts, two labellers).
+Prototype pipeline on simulated data: rubric frozen, alert generator, severity baseline, ordinal logistic model, explanations, ablation and counterfactuals. In progress: independently labelled gold set (40 alerts, two labellers) and the final report.
 
 ## Tech Stack
 Python, pandas, numpy, scipy, scikit-learn, matplotlib, PyYAML. The ordinal (proportional-odds) logistic regression is implemented directly with scipy. All data is simulated and local.
