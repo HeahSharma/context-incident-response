@@ -1,0 +1,5 @@
+model,scored_against,accuracy,mae_tiers,qwk
+severity_baseline,noisy_labels,0.386,0.829,0.342
+severity_baseline,clean_labels,0.371,0.833,0.37
+ordinal_logit,noisy_labels,0.862,0.148,0.919
+ordinal_logit,clean_labels,0.924,0.076,0.964

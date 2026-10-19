@@ -1,53 +1,51 @@
 org: "Fictional mid-size hospital-and-clinics group"
 tiers: [Monitor, Investigate, Contain, Escalate]
-
-# Final tier = first cutoff the score reaches
+ 
+# Final tier = highest cutoff the score reaches
 cutoffs:
   Monitor: 0
-  Investigate: 25
-  Contain: 50
+  Investigate: 35
+  Contain: 55
   Escalate: 75
-
-# 17 features, 5 dimensions. Points are per level (ordinal) or when true (binary).
+ 
+# 17 features, 5 dimensions.
+# Ordinal: value runs 0..max, points = value * points_per_level
+# Binary: value is 0 or 1, points added when 1
 features:
   # Security (4)
-  severity:            {dim: security, type: ordinal, levels: 4, points_per_level: 5}
-  detection_confidence:{dim: security, type: ordinal, levels: 3, points_per_level: 4}
-  ti_reputation:       {dim: security, type: ordinal, levels: 3, points_per_level: 8}   # 0 clean, 1 suspicious, 2 malicious
-  mitre_stage:         {dim: security, type: ordinal, levels: 3, points_per_level: 5}   # 1 early, 2 mid, 3 late
-
+  severity:             {dim: security, type: ordinal, max: 3, points_per_level: 5}
+  detection_confidence: {dim: security, type: ordinal, max: 2, points_per_level: 4}
+  ti_reputation:        {dim: security, type: ordinal, max: 2, points_per_level: 8}   # 0 clean, 1 suspicious, 2 malicious
+  mitre_stage:          {dim: security, type: ordinal, max: 3, points_per_level: 5}   # 0 none, 1 early, 2 mid, 3 late
   # User (4)
-  privileged_account:  {dim: user, type: binary, points: 15}
-  role_level:          {dim: user, type: ordinal, levels: 4, points_per_level: 3}
-  mfa_enabled:         {dim: user, type: binary, points: -5}
-  behavior_anomaly:    {dim: user, type: ordinal, levels: 3, points_per_level: 6}
-
+  privileged_account:   {dim: user, type: binary, points: 15}
+  role_level:           {dim: user, type: ordinal, max: 3, points_per_level: 3}
+  mfa_enabled:          {dim: user, type: binary, points: -5}
+  behavior_anomaly:     {dim: user, type: ordinal, max: 2, points_per_level: 6}
   # Asset (3)
-  asset_criticality:   {dim: asset, type: ordinal, levels: 4, points_per_level: 6}
-  internet_facing:     {dim: asset, type: binary, points: 6}
-  sensitive_data:      {dim: asset, type: binary, points: 8}
-
+  asset_criticality:    {dim: asset, type: ordinal, max: 4, points_per_level: 6}
+  internet_facing:      {dim: asset, type: binary, points: 6}
+  sensitive_data:       {dim: asset, type: binary, points: 8}
   # Business (3)
-  business_impact:     {dim: business, type: ordinal, levels: 4, points_per_level: 5}
-  production_system:   {dim: business, type: binary, points: 6}
-  regulated_system:    {dim: business, type: binary, points: 5}
-
+  business_impact:      {dim: business, type: ordinal, max: 4, points_per_level: 5}
+  production_system:    {dim: business, type: binary, points: 6}
+  regulated_system:     {dim: business, type: binary, points: 5}
   # Environmental (3)
-  off_hours:           {dim: environmental, type: binary, points: 6}
-  maintenance_window:  {dim: environmental, type: binary, points: -15}
-  known_travel_or_vpn: {dim: environmental, type: binary, points: -10}
-
-# Override rules run after scoring
+  off_hours:            {dim: environmental, type: binary, points: 6}
+  maintenance_window:   {dim: environmental, type: binary, points: -15}
+  known_travel_or_vpn:  {dim: environmental, type: binary, points: -10}
+ 
+# Override rules run after scoring, in this order
 overrides:
   - name: privileged_plus_malicious_ti
     if: {privileged_account: 1, ti_reputation: 2}
     min_tier: Contain
   - name: life_critical_asset
     if: {asset_criticality: 4, business_impact: 4}
-    force_tier: Escalate          # approval needed before isolating
+    force_tier: Escalate
   - name: maintenance_cap
     if: {maintenance_window: 1, ti_reputation: 0}
     max_tier: Investigate
-
+ 
 noise:
-  rate: 0.07                      # 5-10%, shifts label by one tier
+  rate: 0.07   # fraction of labels shifted by one tier

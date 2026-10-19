@@ -1,0 +1,9 @@
+change,avg_shift_in_expected_tier,pct_alerts_changing_tier,pct_moved_up,pct_moved_down
+turn MFA on,-0.064,7.1,0.0,7.1
+turn MFA off,0.175,14.8,14.8,0.0
+make account privileged,0.521,54.3,54.3,0.0
+put in maintenance window,-0.334,39.0,0.0,39.0
+mark as known VPN/travel,-0.338,41.0,0.0,41.0
+move to off-hours,0.115,10.5,10.5,0.0
+asset criticality +1,0.244,19.5,19.5,0.0
+threat intel = malicious,0.351,35.2,35.2,0.0
